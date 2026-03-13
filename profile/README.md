@@ -14,7 +14,8 @@
   <img src="https://img.shields.io/badge/language-TypeScript-3178c6?style=flat-square&logo=typescript" alt="TypeScript"/>
   <img src="https://img.shields.io/badge/license-MIT-22c55e?style=flat-square" alt="MIT License"/>
 </p>
----
+
+
 ## What is Pons?
 **Pons** is a microkernel platform that runs intelligent modules as isolated processes, coordinated through a central kernel via IPC. Think of it as a minimal, composable OS for AI-powered systems — where every capability is a module, nothing is hardcoded, and the kernel stays thin.
 > *"The smallest seed of a thinking system."*
