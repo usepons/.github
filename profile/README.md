@@ -38,6 +38,7 @@ Modules never import each other directly. All communication — events, RPC call
        process          process         process
 ```
 Modules communicate only through the kernel. Hot-swap, restart, and discovery are built in.
+
 ---
 ## Repositories
 | Repository | Description |
@@ -51,11 +52,30 @@ Modules communicate only through the kernel. Hot-swap, restart, and discovery ar
 | [**web**](https://github.com/usepons/web) | Web interface for the Pons platform |
 ---
 ## Getting Started
-Install Pons via the CLI (requires [Deno](https://deno.com)):
+### Installation
+You can install Pons using the automated install scripts, which will handle Deno installation if needed:
+
+**For macOS and Linux:**
 ```sh
-deno install -gA jsr:@pons/cli
-pons start
+curl -fsSL https://raw.githubusercontent.com/usepons/.github/main/install.sh | sh
 ```
+
+**For Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/usepons/.github/main/install.ps1 | iex
+```
+
+Alternatively, install Pons via the CLI directly (requires [Deno](https://deno.com)):
+```sh
+deno install -gA -n pons jsr:@pons/cli
+```
+
+### Quick Start
+Once installed, start your Pons system:
+```sh
+pons install && pons onboard
+```
+
 To build your own module, use the SDK:
 ```sh
 # deno.json
@@ -68,6 +88,7 @@ To build your own module, use the SDK:
 ```ts
 import { ModuleRunner } from "@pons/sdk";
 import type { ModuleManifest } from "@pons/sdk";
+
 class MyModule extends ModuleRunner {
   readonly manifest: ModuleManifest = {
     id: "my-module",
@@ -75,24 +96,34 @@ class MyModule extends ModuleRunner {
     description: "Does something useful",
     subscribes: ["some.topic"],
   };
+
   protected override async onMessage(topic: string, payload: unknown) {
     this.log("info", `Received: ${topic}`);
   }
 }
+
 new MyModule().start();
 ```
 ---
 ## Core Concepts
+
 **Message Bus** — Modules publish and subscribe to topics. The kernel routes messages. No persistence, no retry — pure fire-and-forget.
+
 **RPC** — Request/response calls between modules go through the kernel's service directory. The kernel resolves service names to module IDs and routes responses back with a 30s timeout.
+
 **Module Lifecycle** — Each module runs as an isolated child process. The kernel handles spawn, kill, restart with exponential backoff, and hot-swap.
+
 **Service Directory** — Modules declare what they `provides` and `requires`. The kernel ensures dependencies are satisfied before a module activates.
+
 **Configuration** — Layered YAML config at `~/.pons/config.yaml`. Modules own a config section. Hot-reload via `SIGUSR1`.
+
 ---
 ## Contributing
+
 All repositories follow the same contribution guidelines. See [CONTRIBUTING.md](https://github.com/usepons/kernel/blob/main/CONTRIBUTING.md) in the kernel repo to get started.
+
 ---
 <p align="center">
-  <sub>Built with TypeScript · Powered by Deno · MIT Licensed</sub><br/>
+  <sub>Built with 🖤 by <a href="https://cyberwolf.studio/">CyberWolf.Studio</a> · Powered by Deno · MIT Licensed</sub><br/>
   <sub>© 2026 Pons · <a href="https://github.com/usepons">github.com/usepons</a></sub>
 </p>
